@@ -1,10 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import MovieViewSet
+from . import views
 
 router = DefaultRouter()
-router.register(r'movies', MovieViewSet, basename='movie')
+router.register(r'movies', views.MovieViewSet, basename='movies')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', views.index, name="index"),
+    path('tmdb/<int:movie_id>/', views.get_movie_from_tmdb, name="movie_from_tmdb"),
+    path('api/', include(router.urls)),
 ]
