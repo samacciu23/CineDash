@@ -1,0 +1,41 @@
+.navbar {
+  margin: 0 2.5rem;
+  padding: .5rem 0;
+  align-items: center;
+  display: flex;
+  justify-content:space-between;
+}
+
+.navbarLeft, .navRight {
+  display: flex;
+  align-items: center;
+
+}
+
+a > span{
+  margin: 0 30px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: white;
+}
+
+a > span:hover {
+  color: red;
+}
+
+.navbar__icon {
+  width: 100px;
+  cursor: pointer;
+}
+
+.user__avatar {
+  font-size: 2rem;
+}
+.text {
+  background: #FCEABB;
+  background: repeating-radial-gradient(ellipse farthest-corner at center center, #FCEABB 0%, #FCCD4D 50%, #F8B500 51%, #FBDF93 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  
+}
