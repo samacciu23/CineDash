@@ -17,3 +17,8 @@ TMDB_API_KEY = your_api_key_goes_here
 ```
 \* Example of request url: https://api.themoviedb.org/3/movie/550?api_key={TMDB_API_KEY}
 
+## Screenshots of the app
+### Home Page
+![Home Page](screenshots/home.png)
+### Movie Page
+![Movie Page](screenshots/movie.png)
