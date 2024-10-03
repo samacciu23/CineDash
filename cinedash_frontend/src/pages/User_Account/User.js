@@ -5,6 +5,7 @@ import MultiCarousel from 'react-multi-carousel'; // Correct import for MultiCar
 import 'react-multi-carousel/lib/styles.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import MovieList from "../../Components/movieList/movieList";
 
 
 
@@ -154,6 +155,7 @@ const responsive = {
         ))}
       </ul>
     </div>
+    <MovieList/>
     </>
   );
 };
