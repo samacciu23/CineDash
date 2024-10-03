@@ -20,7 +20,8 @@ load_dotenv()
 
 # The Movie DataBase (TMDB) variables
 TMDB_API_KEY = os.getenv('TMDB_API_KEY')
-TMDB_API_BASE_URL = "https://api.themoviedb.org/3/"
+TMDB_API_MOVIES_BASE_URL = "https://api.themoviedb.org/3/"
+TMDB_API_IMAGES_BASE_URL = "https://image.tmdb.org/t/p/original"
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

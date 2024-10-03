@@ -1,5 +1,5 @@
-from rest_framework import views, viewsets
-from django.http import JsonResponse
+from rest_framework import viewsets
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from .models import Movie
 from .serializers import MovieSerializer
@@ -7,27 +7,31 @@ from .services.tmdb import TmdbApiService
 
 
 def index(request):
-    internal_urls = {
+    urls = {
         'api': '/api/',
-        'movies': '/api/movies',
+        'api_movies': '/api/movies',
+        'tmdb_movies_id': '/tmdb/movies/11',
+        'tmdb_posters_path': '/tmdb/posters/1E5baAaEse26fej7uHcjOgEE2t2.jpg',
     }
-    tmdb_urls = {
-        'tmdb_movie_11': '/tmdb/11' 
-    }
-    return render(request, 'index.html', {'internal_urls': internal_urls, 'tmdb_urls': tmdb_urls})
+    return render(request, 'index.html', {'urls': urls,})
 
+####### INTERNAL DATABASE FOR PRIVATE MOVIES #########
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
 
+####### EXTERNAL TMDB API FOR PUBLIC MOVIES #########
+
+tmdb_api_service = TmdbApiService()
+
+
 def get_movie_from_tmdb(request, movie_id):
-    tmdb_api_service = TmdbApiService()
-    try:
-        movie_data = tmdb_api_service.get_movie(movie_id)
-        return JsonResponse(movie_data)
-    except ValueError as e:
-        return JsonResponse({'error': str(e)}, status=400)
-    except ConnectionError as e:
-        return JsonResponse({'error': str(e)}, status=500)
+    movie_response = tmdb_api_service.get_movie(movie_id)
+    return JsonResponse(movie_response.json())
+    
+
+def get_poster_from_tmdb(request, poster_path):
+    poster_response = tmdb_api_service.get_poster(poster_path)
+    return HttpResponse(poster_response.content, content_type='image/jpeg')

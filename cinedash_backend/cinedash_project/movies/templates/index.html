@@ -6,15 +6,17 @@
     <title>CineDash Server Home Page</title>
 </head>
 <body>
+
     <h1>Welcome to the CineDash Server</h1>
     <p>Use the following urls to retrieve data.</p>
 
     <h2>From SQLite internal database</h2>
-    <p><a href="{{ internal_urls.api }}">Internal API /api/ (root) endpoint</a></p>
-    <p><a href="{{ internal_urls.movies }}">Internal API /api/movies/ endpoint</a></p>
+    <p>- Go to (rest framework) API root ===> <a href="{{ urls.api }}">/api/</a></p>
+    <p>- Get list of movies ===> <a href="{{ urls.api_movies }}">/api/movies/</a></p>
     
     <h2>From The Movie DataBase "TMDB" (external API service)</h2>
-    <p><a href="{{ tmdb_urls.tmdb_movie_11 }}">External TMDB API /tmdb/11/ endpoint</a> (get movie with id = 11)</p>
+    <p>- Get movie with id = 11 ===> <a href="{{ urls.tmdb_movies_id }}">/tmdb/movies/{id}/</a></p>
+    <p>- Get poster with path = 1E5baAaEse26fej7uHcjOgEE2t2.jpg ===> <a href="{{ urls.tmdb_posters_path }}">/tmdb/posters/{path}/</a></p>
   
 </body>
 </html>
