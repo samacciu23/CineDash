@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-from .models import Movie
-from .serializers import MovieSerializer
+from .models import Movie, Profile
+from .serializers import MovieSerializer, ProfileSerializer
 from .services.tmdb import TmdbApiService
 
 
@@ -23,6 +23,10 @@ def index(request):
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
 
 ####### EXTERNAL TMDB API FOR PUBLIC MOVIES #########

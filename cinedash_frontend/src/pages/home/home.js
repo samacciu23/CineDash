@@ -17,19 +17,22 @@ const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0); // Track current slide index
 
     useEffect(() => {
-        fetch("https://api.themoviedb.org/3/movie/popular?api_key=8968a8562fbeb01f72838fd769289b99&language=en-US")
+        fetch("http://127.0.0.1:8000/tmdb/movies/popular/")
         .then(res => res.json())
-        .then(data => setPopularMovies(data.results))
+        .then(data => {
+            console.log(data.results)
+            setPopularMovies(data.results)
+        })
     }, []);
 
     useEffect(() => {
-        fetch("https://api.themoviedb.org/3/movie/top_rated?api_key=8968a8562fbeb01f72838fd769289b99&language=en-US")
+        fetch("http://127.0.0.1:8000/tmdb/movies/top_rated/")
         .then(res => res.json())
         .then(data => setTopRatedMovies(data.results))
     }, []);
 
     useEffect(() => {
-        fetch("https://api.themoviedb.org/3/movie/upcoming?api_key=8968a8562fbeb01f72838fd769289b99&language=en-US")
+        fetch("http://127.0.0.1:8000/tmdb/movies/upcoming/")
         .then(res => res.json())
         .then(data => setUpcomingMovies(data.results))
     }, []);
