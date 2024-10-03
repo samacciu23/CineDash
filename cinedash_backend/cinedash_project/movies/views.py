@@ -1,12 +1,14 @@
 from rest_framework import viewsets
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
-from .models import Movie, Profile
-from .serializers import MovieSerializer, ProfileSerializer
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import Movie
+from .serializers import MovieSerializer
 from .services.tmdb import TmdbApiService
 
 
-def index(request):
+def index_view(request):
     urls = {
         'api': '/api/',
         'api_movies': '/api/movies',
@@ -18,15 +20,41 @@ def index(request):
     }
     return render(request, 'index.html', {'urls': urls,})
 
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'signup.html', {'form': form})
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('http://localhost:3000/')   # React Home Page
+    else:
+        form = AuthenticationForm()
+    
+    return render(request, 'login.html', {'form': form})
+
+
 ####### INTERNAL DATABASE FOR PRIVATE MOVIES #########
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-
-class ProfileViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
 
 
 ####### EXTERNAL TMDB API FOR PUBLIC MOVIES #########

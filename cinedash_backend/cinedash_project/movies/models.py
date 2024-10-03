@@ -13,11 +13,3 @@ class Movie(models.Model):
     def __str__(self):
         return f"{self.title} by {self.director}, {self.releaseDate}"
     
-
-class Profile(models.Model):
-    username = models.CharField(max_length=50)   # all required
-    email = models.EmailField(max_length=100)
-    password = models.CharField(max_length=30)
-
-    def __str__(self):
-        return f"{self.username}, {self.email}"
