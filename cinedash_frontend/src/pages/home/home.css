@@ -32,6 +32,7 @@
     font-size: 4rem;
     margin-bottom: 0.4rem;
     text-align: left;
+    color: aliceblue;
 }
 
 .posterImage__runtime {
@@ -90,6 +91,11 @@
 .carousel-item:hover .carousel-item-overlay {
     opacity: 1; /* Show overlay on hover */
 }
-h2 {
-    text-align: center;
+
+.carousel_tittle {
+    font-weight: 900;
+    font-size: 3rem;
+    margin-bottom: 0.4rem;
+    text-align: left;
+    color: aliceblue;
 }

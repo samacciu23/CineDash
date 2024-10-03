@@ -5,6 +5,7 @@ import 'react-multi-carousel/lib/styles.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel as ResponsiveCarousel } from 'react-responsive-carousel'; // Rename to avoid confusion
 import { Link } from "react-router-dom";
+import MovieList from "../../Components/movieList/movieList";
 
 
 
@@ -76,8 +77,9 @@ const Home = () => {
                         ))
                     }
                 </ResponsiveCarousel>
-                
-                <h2>Top Rated Movies</h2>
+            </div>
+            <div>
+                <Link to="/movies/top_rated" style={{textDecoration: "none"}}><span className="carousel_tittle">Top Rated Movies</span></Link>
                 <MultiCarousel
                     responsive={responsive}
                     swipeable={true}
@@ -106,10 +108,10 @@ const Home = () => {
                         </div>
                     ))}
                 </MultiCarousel>
+            </div>              
                 
-                
-                
-                <h2>Upcoming Movies</h2>
+            <div>    
+                <Link to="/movies/top_rated" style={{textDecoration: "none"}}><span className="carousel_tittle">Upcoming Movies</span></Link>
                 <MultiCarousel
                     responsive={responsive}
                     swipeable={true}
@@ -138,6 +140,7 @@ const Home = () => {
                     ))}
                 </MultiCarousel>
             </div>
+            
         </>
     )
 }

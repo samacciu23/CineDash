@@ -1,48 +1,117 @@
-.addUser {
-    background-color: white;
-    width: 25%;
-    margin: 50px auto;
-    /* margin in top and bottom will be 50px  */
-    /* left and right auto  */
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.065);
-  
-    /* horizon offset vertical offset blur offset  */
-    /* opacity of shadow */
-    /* red, green, blue, and (opacity ). */
+/* Login.css */
+.loginPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1;
+  margin:auto
+}
+
+.loginPage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);  /* Dark overlay on background */
+  z-index: -1;
+}
+
+.loginContainer {
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background for the form */
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+h3 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+}
+
+.inputGroup label {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  display: block;
+}
+
+.inputGroup input {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button {
+  padding: 0.75rem;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.signupPrompt {
+  margin-top: 1.5rem;
+}
+
+.signupPrompt p {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.signupPrompt a {
+  color: white;
+  background-color: #28a745;
+  padding: 0.75rem;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.signupPrompt a:hover {
+  background-color: #218838;
+}
+
+@media screen and (max-width: 768px) {
+  .loginContainer {
+      width: 90%;
   }
-  .addUserForm .inputGroup {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .addUserForm .inputGroup label {
-    margin-top: 10px;
-  }
-  
-  .addUserForm .inputGroup input {
-    margin-top: 5px;
-    padding: 10px;
-  }
-  
-  .inputGroup button {
-    margin-top: 10px;
-  }
-  .login {
-    margin-top: 30px;
-    text-align: center;
-  }
-  
-  .login .btn.btn-success {
-    width: 50%;
-  }
-  
-  .addUser h3 {
-    text-align: center;
-    font-weight: bold;
-    color: darkcyan;
-    text-transform: uppercase;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-  }
+}

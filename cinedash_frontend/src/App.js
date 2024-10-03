@@ -7,6 +7,7 @@ import MovieList from './Components/movieList/movieList';
 import Movie from './pages/movieDetail/movie';
 import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
+import User from './pages/User_Account/User';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="movies/:type" element={<MovieList />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/account" element={<User />} />
         <Route path="/*" element={<h1>Error Page: Page Not Found</h1>} />
       </Routes>
     </Router>
