@@ -1,15 +1,18 @@
 from rest_framework import viewsets
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Movie, Profile
 from .serializers import MovieSerializer, ProfileSerializer
 from .services.tmdb import TmdbApiService
 
 
-def index(request):
+def index_view(request):
     urls = {
         'api': '/api/',
         'api_movies': '/api/movies',
+        'api_profiles': '/api/profiles',
         'tmdb_movies_id': '/tmdb/movies/11',    # choose any id, here 11 was used as an example
         'tmdb_movies_popular': 'tmdb/movies/popular/',
         'tmdb_movies_top_rated': 'tmdb/movies/top_rated/',
@@ -17,6 +20,44 @@ def index(request):
         'tmdb_posters_size_path': '/tmdb/posters/original/1E5baAaEse26fej7uHcjOgEE2t2.jpg',    # image_size options: original, w500; and choose any poster_path
     }
     return render(request, 'index.html', {'urls': urls,})
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            profile = Profile(user=user)
+            profile.save()
+            try:
+                test_movie = Movie.objects.get(id=1)
+            except Movie.DoesNotExist:
+                print("Test Movie not found.")
+            test_movie.save()
+            profile.add_movie(test_movie)
+            login(request, user)
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'signup.html', {'form': form})
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('http://localhost:3000/')   # React Home Page
+    else:
+        form = AuthenticationForm()
+    
+    return render(request, 'login.html', {'form': form})
+
 
 ####### INTERNAL DATABASE FOR PRIVATE MOVIES #########
 
