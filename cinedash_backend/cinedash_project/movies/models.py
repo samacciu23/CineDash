@@ -10,10 +10,14 @@ class Movie(models.Model):
     watching = models.BooleanField(default=False)  
     watched = models.BooleanField(default=False)   
     inWishlist = models.BooleanField(default=False)
-    # lastWatched = models.DateTimeField(blank=True)
-    # finishedWatching = models.BooleanField(blank=True)
-    # numOfTimesWatched = models.PositiveIntegerField(blank=True)
-    # inWishList = models.BooleanField(blank=True)
+    
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check = ~models.Q(watching=True) | ~models.Q(watched=True),
+                name = 'cannot_watch_and_have_watched'
+            ),
+        ]
 
     def __str__(self):
         return f"{self.title} by {self.director}, {self.releaseDate}"
@@ -23,7 +27,23 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None, primary_key=True)
     movies = models.ManyToManyField(Movie, blank=True)
 
-
     def __str__(self):
         return self.user.username
     
+    def add_movie(self, movie: Movie) -> None:
+        self.movies.add(movie)
+
+    def remove_movie(self, movie: Movie) -> None:
+        self.movies.remove(movie)
+
+    def has_watched(self, movie: Movie) -> bool:
+        return movie in self.movies.filter(watched=True)
+    
+    def get_watched_movies(self) -> list[Movie]:
+        return list(self.movies.filter(watched=True))
+
+    def get_wishlist_movies(self) -> list[Movie]:
+        return list(self.movies.filter(inWishlist=True))
+    
+    def get_watching_movies(self) -> list[Movie]:
+        return list(self.movies.filter(watching=True))

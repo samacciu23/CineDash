@@ -29,9 +29,12 @@ def signup_view(request):
             user = form.save()
             profile = Profile(user=user)
             profile.save()
-            test_movie = Movie(title="Test Movie at Signup")
+            try:
+                test_movie = Movie.objects.get(id=1)
+            except Movie.DoesNotExist:
+                print("Test Movie not found.")
             test_movie.save()
-            profile.movies.add(test_movie)
+            profile.add_movie(test_movie)
             login(request, user)
             return redirect('login')
     else:
