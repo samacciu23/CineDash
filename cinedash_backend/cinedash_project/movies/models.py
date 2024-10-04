@@ -25,7 +25,7 @@ class Movie(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None, primary_key=True)
-    movies = models.ManyToManyField(Movie, blank=True)
+    movies = models.ManyToManyField(Movie, blank=True, related_name='watched_by')
 
     def __str__(self):
         return self.user.username
