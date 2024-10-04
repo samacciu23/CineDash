@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import MovieList from "../../Components/movieList/movieList";
 
 
-
 const Home = () => {
 
     const [popularMovies, setPopularMovies ] = useState([]);
