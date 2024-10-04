@@ -3,8 +3,8 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Movie
-from .serializers import MovieSerializer
+from .models import Movie, Profile
+from .serializers import MovieSerializer, ProfileSerializer
 from .services.tmdb import TmdbApiService
 
 
@@ -12,6 +12,7 @@ def index_view(request):
     urls = {
         'api': '/api/',
         'api_movies': '/api/movies',
+        'api_profiles': '/api/profiles',
         'tmdb_movies_id': '/tmdb/movies/11',    # choose any id, here 11 was used as an example
         'tmdb_movies_popular': 'tmdb/movies/popular/',
         'tmdb_movies_top_rated': 'tmdb/movies/top_rated/',
@@ -26,6 +27,11 @@ def signup_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            profile = Profile(user=user)
+            profile.save()
+            test_movie = Movie(title="Test Movie at Signup")
+            test_movie.save()
+            profile.movies.add(test_movie)
             login(request, user)
             return redirect('login')
     else:
@@ -55,6 +61,10 @@ def login_view(request):
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
 
 ####### EXTERNAL TMDB API FOR PUBLIC MOVIES #########
