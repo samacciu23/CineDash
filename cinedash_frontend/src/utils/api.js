@@ -12,19 +12,36 @@ export const fetchMovieById = async (tmdbId) => {
 };
 
 
-export const getLoginStatus = async () => {
-  try {
-    const response = await axios.get('http://localhost:8000/login-status/');
-    return response.data;
-  } catch (error) {
+export async function fetchAndSetLoginStatus(setter) {
+  await axios.get('http://localhost:8000/login-status/')
+  .then(response => {
+    setter(response.data.is_auth);
+  })
+  .catch(error => {
     console.error('Error fetching login status: ', error);
-    throw error;
-  }
+  })
 };
 
 
-export function fetchAndSetMovieByType(type, setter) {
-  fetch("http://localhost:8000/tmdb/movies/"+type)
-        .then(res => res.json())
-        .then(data => setter(data.results))
-}
+export async function fetchAndSetMoviesByType(type, setter) {
+  await axios.get("http://localhost:8000/tmdb/movies/"+type)
+        .then(response => {
+          setter(response.data.results || []);
+          })
+        .catch(error => {
+          console.error('Error fetching movies by type: ', error);
+        });
+};
+
+
+export async function handleLogout(setter) {
+  await axios.post('http://localhost:8000/logout/', {})
+  .then(response => {
+      console.log('Logout POST response status: ', response.status);
+      setter(false);
+  })
+  .catch(error => {
+      console.error('Error handling logout: ', error);
+  });
+};
+

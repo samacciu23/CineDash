@@ -5,7 +5,7 @@ import 'react-multi-carousel/lib/styles.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel as ResponsiveCarousel } from 'react-responsive-carousel';
 import { Link } from "react-router-dom";
-import { fetchAndSetMovieByType } from '../../utils/api';
+import { fetchAndSetMoviesByType } from '../../utils/api';
 
 
 const Home = () => {
@@ -15,9 +15,9 @@ const Home = () => {
     const [upcomingMovies, setUpcomingMovies] = useState([]);
     const [currentSlide, setCurrentSlide] = useState(0); // Track current slide index
 
-    useEffect(() => { fetchAndSetMovieByType('popular', setPopularMovies) }, []);
-    useEffect(() => { fetchAndSetMovieByType('top_rated', setTopRatedMovies) }, []);
-    useEffect(() => { fetchAndSetMovieByType('upcoming', setUpcomingMovies) }, []);
+    useEffect(() => { fetchAndSetMoviesByType('popular', setPopularMovies) }, []);
+    useEffect(() => { fetchAndSetMoviesByType('top_rated', setTopRatedMovies) }, []);
+    useEffect(() => { fetchAndSetMoviesByType('upcoming', setUpcomingMovies) }, []);
 
     const responsive = {
         superLargeDesktop: { breakpoint: { max: 4000, min: 1024 }, items: 5 },
