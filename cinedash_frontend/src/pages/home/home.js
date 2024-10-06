@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./home.css";
-import MultiCarousel from 'react-multi-carousel'; // Correct import for MultiCarousel
+import MultiCarousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel as ResponsiveCarousel } from 'react-responsive-carousel'; // Rename to avoid confusion
+import { Carousel as ResponsiveCarousel } from 'react-responsive-carousel';
 import { Link } from "react-router-dom";
-import MovieList from "../../Components/movieList/movieList";
+import { fetchAndSetMovieByType } from '../../utils/api';
 
 
 const Home = () => {
@@ -15,26 +15,9 @@ const Home = () => {
     const [upcomingMovies, setUpcomingMovies] = useState([]);
     const [currentSlide, setCurrentSlide] = useState(0); // Track current slide index
 
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/tmdb/movies/popular/")
-        .then(res => res.json())
-        .then(data => {
-            console.log(data.results)
-            setPopularMovies(data.results)
-        })
-    }, []);
-
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/tmdb/movies/top_rated/")
-        .then(res => res.json())
-        .then(data => setTopRatedMovies(data.results))
-    }, []);
-
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/tmdb/movies/upcoming/")
-        .then(res => res.json())
-        .then(data => setUpcomingMovies(data.results))
-    }, []);
+    useEffect(() => { fetchAndSetMovieByType('popular', setPopularMovies) }, []);
+    useEffect(() => { fetchAndSetMovieByType('top_rated', setTopRatedMovies) }, []);
+    useEffect(() => { fetchAndSetMovieByType('upcoming', setUpcomingMovies) }, []);
 
     const responsive = {
         superLargeDesktop: { breakpoint: { max: 4000, min: 1024 }, items: 5 },
@@ -60,9 +43,9 @@ const Home = () => {
                 >
                     {
                         popularMovies.map(movie => (
-                            <Link style={{textDecoration:"none",color:"white"}} to={`/movie/${movie.id}`} >
+                            <Link key={movie.id} style={{textDecoration:"none",color:"white"}} to={`/movie/${movie.id}`} >
                                 <div className="posterImage">
-                                    <img src={`http://127.0.0.1:8000/tmdb/posters/original${movie && movie.backdrop_path}` } alt={movie.title} />
+                                    <img src={`http://localhost:8000/tmdb/posters/original${movie && movie.backdrop_path}` } alt={movie.title} />
                                 </div>
                                 <div className="posterImage__overlay">
                                     <div className="posterImage__title">{movie ? movie.original_title: ""}</div>
@@ -100,20 +83,22 @@ const Home = () => {
                     selectedItem={currentSlide} // Control the selected item
                     onChange={(index) => setCurrentSlide(index)} // Update currentSlide on change
                 >
-                    {topRatedMovies.map(movie => (
-                        <div key={movie.id} className="carousel-item">
-                            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-                            <div className="carousel-item-overlay">
-                                <h3>{movie.title}</h3>
-                                <p>{movie.overview}</p>
+                    {
+                        topRatedMovies.map(movie => (
+                            <div key={movie.id} className="carousel-item">
+                                <img src={`http://localhost:8000/tmdb/posters/w500${movie.poster_path}`} alt={movie.title} />
+                                <div className="carousel-item-overlay">
+                                    <h3>{movie.title}</h3>
+                                    <p>{movie.overview}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    }
                 </MultiCarousel>
             </div>              
                 
             <div>    
-                <Link to="/movies/top_rated" style={{textDecoration: "none"}}><span className="carousel_tittle">Upcoming Movies</span></Link>
+                <Link to="/movies/upcoming" style={{textDecoration: "none"}}><span className="carousel_tittle">Upcoming Movies</span></Link>
                 <MultiCarousel
                     responsive={responsive}
                     swipeable={true}
@@ -131,15 +116,17 @@ const Home = () => {
                     itemClass="carousel-item-padding-40-px"
                     beforeChange={(nextSlide) => handleMultiCarouselChange(nextSlide)} // Sync change with state
                 >
-                    {upcomingMovies.map(movie => (
-                        <div key={movie.id} className="carousel-item">
-                            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-                            <div className="carousel-item-overlay">
-                                <h3>{movie.title}</h3>
-                                <p>{movie.overview}</p>
+                    {
+                        upcomingMovies.map(movie => (
+                            <div key={movie.id} className="carousel-item">
+                                <img src={`http://localhost:8000/tmdb/posters/w500${movie.poster_path}`} alt={movie.title} />
+                                <div className="carousel-item-overlay">
+                                    <h3>{movie.title}</h3>
+                                    <p>{movie.overview}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    }
                 </MultiCarousel>
             </div>
             

@@ -20,6 +20,7 @@ load_dotenv()
 
 # The Movie DataBase (TMDB) variables
 TMDB_API_KEY = os.getenv('TMDB_API_KEY')
+TMDB_ACCESS_TOKEN = os.getenv('TMDB_ACCESS_TOKEN')
 TMDB_API_MOVIES_BASE_URL = "https://api.themoviedb.org/3/movie"
 TMDB_API_IMAGES_BASE_URL = "https://image.tmdb.org/t/p"
 
@@ -67,6 +68,10 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
 ]
 
 ROOT_URLCONF = 'cinedash_project.urls'

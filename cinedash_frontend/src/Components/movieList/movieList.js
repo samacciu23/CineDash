@@ -10,15 +10,10 @@ const MovieList = ({ type: propType }) => {
     // Prioritize `propType` (from parent), fallback to `urlType` (from URL), default to 'popular'
     const type = propType || urlType || "popular";
   
-    // Fetch movies based on the `type` (either from props or URL)
-    useEffect(() => {
-      getData();
-    }, [type]);
-  
     const getData = async () => {
       try {
         const res = await fetch(
-          `https://api.themoviedb.org/3/movie/${type}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`
+          `http://localhost:8000/tmdb/movies/${type}`
         );
         const data = await res.json();
         setMovieList(data.results || []);  // Set results, fallback to empty array if none
@@ -26,6 +21,9 @@ const MovieList = ({ type: propType }) => {
         console.error("Error fetching movies:", error);
       }
     };
+
+    // Fetch movies based on the `type` (either from props or URL)
+    useEffect(() => { getData() }, [type]);
   
     return (
       <div className="movie__list">

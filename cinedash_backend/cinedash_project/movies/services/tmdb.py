@@ -7,15 +7,16 @@ class TmdbApiService:
         self.api_movies_base_url = settings.TMDB_API_MOVIES_BASE_URL
         self.api_images_base_url = settings.TMDB_API_IMAGES_BASE_URL
         self.api_key = settings.TMDB_API_KEY
+        self.access_token = settings.TMDB_ACCESS_TOKEN
         self.timeout = 10
 
 
     def _get_headers(self):
-        """Return the default headers including TMDB API key if needed."""
+        """Return the default headers including TMDB access token"""
 
         return {
-            'Authorization': f'Bearer {self.api_key}',
-            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {self.access_token}',
+            'access': 'application/json',
         }
 
 
@@ -31,7 +32,7 @@ class TmdbApiService:
     def get_movie(self, movie_id):
         """Method to get a movie from the TMDB API"""
 
-        url = f"{self.api_movies_base_url}/{movie_id}?api_key={self.api_key}"
+        url = f"{self.api_movies_base_url}/{movie_id}"
 
         try:
             response = requests.get(url, headers=self._get_headers(), timeout=self.timeout)
@@ -51,35 +52,14 @@ class TmdbApiService:
         except requests.exceptions.RequestException as e:
             raise ConnectionError(f"Failed to connect to the TMDB API: {e}")
         
-    
-    def get_popular_movies(self):
-        """Method to get popular movies from the TMDB API"""
-    
-        url = f"{self.api_movies_base_url}/popular?api_key={self.api_key}"
 
-        try:
-            response = requests.get(url, headers=self._get_headers(), timeout=self.timeout)
-            return self._handle_response(response)
-        except requests.exceptions.RequestException as e:
-            raise ConnectionError(f"Failed to connect to the TMDB API: {e}")
+    def get_movies_by_type(self, type):
+        """
+        Method to get movies based on their type from the TMDB API
+        examples of types: popular, top_rated, upcoming
+        """
 
-    
-    def get_top_rated_movies(self):
-        """Method to get top rated movies from the TMDB API"""
-    
-        url = f"{self.api_movies_base_url}/top_rated?api_key={self.api_key}"
-
-        try:
-            response = requests.get(url, headers=self._get_headers(), timeout=self.timeout)
-            return self._handle_response(response)
-        except requests.exceptions.RequestException as e:
-            raise ConnectionError(f"Failed to connect to the TMDB API: {e}")
-        
-    
-    def get_upcoming_movies(self):
-        """Method to get upcoming movies from the TMDB API"""
-    
-        url = f"{self.api_movies_base_url}/upcoming?api_key={self.api_key}"
+        url = f"{self.api_movies_base_url}/{type}"
 
         try:
             response = requests.get(url, headers=self._get_headers(), timeout=self.timeout)

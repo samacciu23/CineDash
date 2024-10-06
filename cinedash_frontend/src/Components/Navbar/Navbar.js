@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { getLoginStatus } from '../../utils/api';
+
 
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    // Simulate user login state from local storage (for now)
+    
     useEffect(() => {
-        const userLoggedIn = localStorage.getItem('isLoggedIn');
-        if (userLoggedIn) {
-            setIsLoggedIn(true); // User is logged in
-        }
+        const checkLoginStatus = async () => {
+            try {
+                const loginStatus = await getLoginStatus();
+                setIsLoggedIn(loginStatus.is_auth);
+            } catch (error) {
+                console.error('Error fetching login status: ', error);
+            }
+        };
+
+        checkLoginStatus();
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn'); // Remove login state
-        setIsLoggedIn(false); // Set login state to false
+        axios.post('http://localhost:8000/logout/', {})
+            .then(response => {
+                console.log('Logout POST response status: ', response.status)
+                setIsLoggedIn(false);
+            })
+            .catch(error => {
+                console.error('Error handling logout: ', error);
+            });
     };
 
     return (
@@ -29,10 +43,7 @@ const Navbar = () => {
                 {isLoggedIn ? (
                     <button onClick={handleLogout} className="logoutBtn">Logout</button>
                 ) : (
-                    // <Link to="/login" style={{textDecoration: "none"}}>
-                    //     <span>Sign In</span>
-                    // </Link>
-                    <a href="http://localhost:8000/signup/" style={{textDecoration: "none"}}>
+                    <a href="http://localhost:8000/login/" style={{textDecoration: "none"}}>
                         <span>Sign In</span>
                     </a>
                 )}

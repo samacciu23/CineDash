@@ -84,12 +84,14 @@ def logout_view(request):
             "status": "error",
             "error": str(e)
         }, status=500) 
+    
+    return redirect('http://localhost:3000/')
 
 
 def get_login_status(request):
     return JsonResponse({
         "username": request.user.username,
-        "is_authenticated": request.user.is_authenticated    
+        "is_auth": request.user.is_authenticated    
     })
   
 
@@ -119,16 +121,6 @@ def get_poster_from_tmdb(request, image_size, poster_path):
     return HttpResponse(poster_response.content, content_type='image/jpeg')
 
 
-def get_popular_movies_from_tmdb(request):
-    popular_movies_response = tmdb_api_service.get_popular_movies()
-    return JsonResponse(popular_movies_response.json())
-
-
-def get_top_rated_movies_from_tmdb(request):
-    top_rated_movies_response = tmdb_api_service.get_top_rated_movies()
-    return JsonResponse(top_rated_movies_response.json())
-
-
-def get_upcoming_movies_from_tmdb(request):
-    upcoming_movies_response = tmdb_api_service.get_upcoming_movies()
-    return JsonResponse(upcoming_movies_response.json())
+def get_movies_by_type_from_tmdb(request, type):
+    movies_by_type_response = tmdb_api_service.get_movies_by_type(type)
+    return JsonResponse(movies_by_type_response.json())
