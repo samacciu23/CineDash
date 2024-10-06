@@ -16,5 +16,7 @@ urlpatterns = [
     path('tmdb/posters/<str:image_size>/<str:poster_path>/', views.get_poster_from_tmdb, name='poster_from_tmdb'),
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('login-status/', views.get_login_status, name="login_status"),
     path('api/', include(router.urls)),
 ]

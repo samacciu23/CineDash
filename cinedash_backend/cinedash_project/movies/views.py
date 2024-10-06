@@ -1,11 +1,14 @@
 from rest_framework import viewsets
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Movie, Profile
 from .serializers import MovieSerializer, ProfileSerializer
 from .services.tmdb import TmdbApiService
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def index_view(request):
@@ -25,18 +28,26 @@ def index_view(request):
 def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
+        
         if form.is_valid():
             user = form.save()
+
             profile = Profile(user=user)
             profile.save()
+            
             try:
                 test_movie = Movie.objects.get(id=1)
             except Movie.DoesNotExist:
                 print("Test Movie not found.")
-            test_movie.save()
-            profile.add_movie(test_movie)
+                test_movie = None
+
+            if test_movie:
+                test_movie.save()
+                profile.add_movie(test_movie)
+            
             login(request, user)
-            return redirect('login')
+            
+            return redirect('http://localhost:3000/')
     else:
         form = UserCreationForm()
     
@@ -46,18 +57,41 @@ def signup_view(request):
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
+
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
+            user = authenticate(request, username=username, password=password)
+
+            if user is None:
+                redirect('login/')
+            else:
                 login(request, user)
-                return redirect('http://localhost:3000/')   # React Home Page
+                return redirect('http://localhost:3000/')
     else:
         form = AuthenticationForm()
     
     return render(request, 'login.html', {'form': form})
 
+
+def logout_view(request):
+    try:
+        logout(request)
+    except Exception as e:
+        logger.error(f"Logout failed: {e}")
+        return JsonResponse({
+            "message": "Logout failed", 
+            "status": "error",
+            "error": str(e)
+        }, status=500) 
+
+
+def get_login_status(request):
+    return JsonResponse({
+        "username": request.user.username,
+        "is_authenticated": request.user.is_authenticated    
+    })
+  
 
 ####### INTERNAL DATABASE FOR PRIVATE MOVIES #########
 
