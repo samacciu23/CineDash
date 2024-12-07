@@ -3,9 +3,11 @@
 Project created by Samuele, Supriya, Anabil.
 
 ## TMDB API
-This app uses an external API: "The Movie DataBase" (TMDB).
+This app uses an external API: "The Movie Database" (TMDB).
 
-To make sure (REST) requests work properly, a .env file, containing an API key, needs to be added to the backend of the app.
+**Credits**: This product uses the TMDB API but is not endorsed or certified by TMDB. Website: https://www.themoviedb.org/.
+
+To make sure that the RESTful requests work properly, an .env file, containing an API key, needs to be added to the backend of the app.
 
 To do so,
 1. Create a TMDB account and get your API key at https://developer.themoviedb.org/docs/getting-started,
