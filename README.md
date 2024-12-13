@@ -17,6 +17,37 @@ TMDB_API_KEY = your_api_key_goes_here
 ```
 \* Example of request url: https://api.themoviedb.org/3/movie/550?api_key={TMDB_API_KEY}
 
+## How to run back-end
+
+Go to backend directory and start Django server:
+```bash
+cd CineDash/cinedash_backend/cinedash_project
+python manage.py runserver
+```
+
+## How to run front-end
+
+First set this environment variable...
+
+On Linux/macOS:
+```bash
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+On Windows Command Prompt:
+```cmd
+set NODE_OPTIONS=--openssl-legacy-provider
+```
+On Windows PowerShell:
+```powershell
+$env:NODE_OPTIONS="--openssl-legacy-provider"
+```
+
+Then go to the frontend directory and start the React app:
+```bash
+cd CineDash/cinedash_frontend
+npm start
+```
+
 ## Screenshots of the app
 ### Home Page
 ![Home Page](screenshots/home.png)
