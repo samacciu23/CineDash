@@ -1,0 +1,21 @@
+databases:
+  - name: cinedash_project_db
+    plan: free
+    databaseName: cinedash_project
+    user: cinedash_project
+
+services:
+  - type: web
+    plan: free
+    name: cinedash_project
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn cinedash_project.asgi:application -k uvicorn.workers.UvicornWorker"    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cinedash_project_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4

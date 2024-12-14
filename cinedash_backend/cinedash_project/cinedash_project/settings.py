@@ -95,21 +95,14 @@ WSGI_APPLICATION = 'cinedash_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# Replace the SQLite DATABASES configuration with PostgreSQL:
 DATABASES = {
-    'default': dj_database_url.config(  
-        default='postgresql://postgres:postgres@localhost:5432/mysite',        
-        conn_max_age=600    
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
+DATABASES['default'] = dj_database_url.parse("postgresql://cinedash_backend_db_user:Q8GIVdJeknaCm9xnFv2J7sgMFi5F9FH1@dpg-ctecji3tq21c73bi0qug-a.frankfurt-postgres.render.com/cinedash_backend_db")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
