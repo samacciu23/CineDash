@@ -23,7 +23,8 @@ TMDB_API_KEY = os.getenv('TMDB_API_KEY')
 TMDB_API_MOVIES_BASE_URL = "https://api.themoviedb.org/3/movie"
 TMDB_API_IMAGES_BASE_URL = "https://image.tmdb.org/t/p"
 
-# Render's PostgreSQL database variables
+# Render variables
+RENDER_DOMAIN = os.getenv('RENDER_DOMAIN')
 POSTGRESQL_USER = os.getenv('POSTGRESQL_USER')
 POSTGRESQL_PSSWD = os.getenv('POSTGRESQL_PSSWD')
 POSTGRESQL_DOMAIN = os.getenv('POSTGRESQL_DOMAIN')
@@ -38,12 +39,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@$umtnka%$grqzprdfav5!wzr#8@_0sb7ec-s5h&!90-8pg%&l'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [RENDER_DOMAIN, 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -75,6 +76,10 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+CSRF_TRUSTED_ORIGINS = [f'https://{RENDER_DOMAIN}']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ROOT_URLCONF = 'cinedash_project.urls'
 
