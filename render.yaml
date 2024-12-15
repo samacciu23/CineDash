@@ -10,7 +10,7 @@ services:
     name: cinedash_backend
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "python -m gunicorn cinedash_backend.asgi:application -k uvicorn.workers.UvicornWorker"    envVars:
+    startCommand: "python -m gunicorn cinedash_backend.asgi:application -k uvicorn.workers.UvicornWorker"    # envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: cinedash_backend_db
