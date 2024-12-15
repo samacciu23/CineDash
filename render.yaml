@@ -1,19 +1,19 @@
 databases:
-  - name: cinedash_project_db
+  - name: cinedash_backend_db
     plan: free
-    databaseName: cinedash_project
-    user: cinedash_project
+    databaseName: cinedash_backend
+    user: cinedash_backend
 
 services:
   - type: web
     plan: free
-    name: cinedash_project
+    name: cinedash_backend
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "python -m gunicorn cinedash_project.asgi:application -k uvicorn.workers.UvicornWorker"    envVars:
+    startCommand: "python -m gunicorn cinedash_backend.asgi:application -k uvicorn.workers.UvicornWorker"    envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: cinedash_project_db
+          name: cinedash_backend_db
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
