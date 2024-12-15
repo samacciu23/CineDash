@@ -15,7 +15,6 @@ import os
 import dj_database_url
 from dotenv import load_dotenv
 
-
 # Load environment variables from .env file
 load_dotenv()
 
@@ -23,6 +22,12 @@ load_dotenv()
 TMDB_API_KEY = os.getenv('TMDB_API_KEY')
 TMDB_API_MOVIES_BASE_URL = "https://api.themoviedb.org/3/movie"
 TMDB_API_IMAGES_BASE_URL = "https://image.tmdb.org/t/p"
+
+# Render's PostgreSQL database variables
+POSTGRESQL_USER = os.getenv('POSTGRESQL_USER')
+POSTGRESQL_PSSWD = os.getenv('POSTGRESQL_PSSWD')
+POSTGRESQL_DOMAIN = os.getenv('POSTGRESQL_DOMAIN')
+POSTGRESQL_DB = os.getenv('POSTGRESQL_DB')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -105,7 +110,7 @@ WSGI_APPLICATION = 'cinedash_project.wsgi.application'
 # Replace the SQLite DATABASES configuration with PostgreSQL:
 DATABASES = {
     'default': dj_database_url.config(  
-        default='postgresql://postgres:postgres@localhost:5432/mysite',        
+        default=f'postgresql://{POSTGRESQL_USER}:{POSTGRESQL_PSSWD}@{POSTGRESQL_DOMAIN}/{POSTGRESQL_DB}',        
         conn_max_age=600    
     )
 }
