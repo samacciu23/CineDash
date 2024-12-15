@@ -75,9 +75,13 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    f"https://{RENDER_DOMAIN}"
 ]
 
-CSRF_TRUSTED_ORIGINS = [f'https://{RENDER_DOMAIN}']
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    f'https://{RENDER_DOMAIN}'
+]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
