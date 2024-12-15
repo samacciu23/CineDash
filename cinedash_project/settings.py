@@ -65,7 +65,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'movies',
-    'render.apps.RenderConfig',
 ]
 
 MIDDLEWARE = [
