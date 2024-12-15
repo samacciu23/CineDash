@@ -27,8 +27,11 @@ TMDB_API_IMAGES_BASE_URL = "https://image.tmdb.org/t/p"
 RENDER_DOMAIN = os.getenv('RENDER_DOMAIN')
 POSTGRESQL_USER = os.getenv('POSTGRESQL_USER')
 POSTGRESQL_PSSWD = os.getenv('POSTGRESQL_PSSWD')
+POSTGRESQL_SUBDOMAIN = os.getenv('POSTGRESQL_SUBDOMAIN')
 POSTGRESQL_DOMAIN = os.getenv('POSTGRESQL_DOMAIN')
 POSTGRESQL_DB = os.getenv('POSTGRESQL_DB')
+DATABASE_INTERNAL_URL = os.getenv('DATABASE_URL')   # f'postgresql://{POSTGRESQL_USER}:{POSTGRESQL_PSSWD}@{POSTGRESQL_SUBDOMAIN}/{POSTGRESQL_DB}'
+DATABASE_EXTERNAL_URL = f'postgresql://{POSTGRESQL_USER}:{POSTGRESQL_PSSWD}@{POSTGRESQL_SUBDOMAIN}.{POSTGRESQL_DOMAIN}/{POSTGRESQL_DB}'
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,12 +42,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', default=os.getenv('DJANGO_SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = True
+DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = [RENDER_DOMAIN, 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # RENDER_DOMAIN
+RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
@@ -58,6 +65,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'movies',
+    'render.apps.RenderConfig',
 ]
 
 MIDDLEWARE = [
@@ -120,7 +128,7 @@ WSGI_APPLICATION = 'cinedash_project.wsgi.application'
 # Replace the SQLite DATABASES configuration with PostgreSQL:
 DATABASES = {
     'default': dj_database_url.config(  
-        default=f'postgresql://{POSTGRESQL_USER}:{POSTGRESQL_PSSWD}@{POSTGRESQL_DOMAIN}/{POSTGRESQL_DB}',        
+        default=DATABASE_INTERNAL_URL,        
         conn_max_age=600    
     )
 }
@@ -167,6 +175,7 @@ STATIC_URL = '/static/'
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    
     # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
     # and renames the files with unique names for each version to support long-term caching
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
